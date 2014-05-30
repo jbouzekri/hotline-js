@@ -1,0 +1,9 @@
+{
+  "name": "hotline-js",
+  "description": "A hotline app to put on any website powered by nodejs",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "4.3.2"
+  }
+}
