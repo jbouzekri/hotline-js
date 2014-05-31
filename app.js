@@ -1,6 +1,8 @@
 var express = require('express');
 var app = express();
 
+app.set('config', require('./config'));
+
 var hotlinebox = require('./routes/front/hotlinebox');
 var switchonline = require('./routes/back/switchonline');
 
