@@ -1,3 +1,4 @@
 {
-    "name": "jobou2"
+    "console_log_level": "error",
+    "file_log_level": "error"
 }

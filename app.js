@@ -1,7 +1,12 @@
 var express = require('express');
 var app = express();
 
-app.set('config', require('./config'));
+var environment = process.env.NODE_ENV || "dev";
+
+var config = require('./config')(environment);
+app.set('config', config);
+
+var logger = require('./logger')(config);
 
 var hotlinebox = require('./routes/front/hotlinebox');
 var switchonline = require('./routes/back/switchonline');
