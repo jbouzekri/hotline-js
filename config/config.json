@@ -1,4 +1,5 @@
 {
     "console_log_level": "verbose",
-    "file_log_level": "verbose"
+    "file_log_level": "verbose",
+    "allowed_origins": "*"
 }
