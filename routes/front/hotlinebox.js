@@ -5,7 +5,9 @@ var globals = require('../../globals');
 
 /* GET home page. */
 router.get('/', function(req, res) {
-    res.render('hotlinebox', { title : 'Home' });
+    res.render('hotlinebox', {
+        host: req.app.get('config').get('host')
+    });
 });
 
 module.exports = router;

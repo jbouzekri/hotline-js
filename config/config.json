@@ -1,5 +1,6 @@
 {
     "console_log_level": "verbose",
     "file_log_level": "verbose",
-    "allowed_origins": "*"
+    "allowed_origins": "*",
+    "host": "localhost:3000"
 }
