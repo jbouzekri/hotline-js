@@ -1,6 +1,7 @@
 {
     "console_log_level": "verbose",
     "file_log_level": "verbose",
+    "theme": "default",
     "allowed_origins": "*",
     "host": "localhost:3000"
 }
