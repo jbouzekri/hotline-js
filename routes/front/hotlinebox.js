@@ -1,13 +1,19 @@
 var express = require('express');
-var router = express.Router();
-
 var globals = require('../../globals');
 
-/* GET home page. */
+var router = express.Router();
+
+/* GET hotlinebox */
 router.get('/', function(req, res) {
     res.render('hotlinebox', {
         host: req.app.get('config').get('host'),
-        theme: req.app.get('config').get('theme')
+        theme: req.app.get('config').get('theme'),
+        csrf: req.csrfToken(),
+        message: {
+            "name":"",
+            "email":"",
+            "message":""
+        }
     });
 });
 

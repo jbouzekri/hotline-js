@@ -3,5 +3,8 @@
     "file_log_level": "verbose",
     "theme": "default",
     "allowed_origins": "*",
-    "host": "localhost:3000"
+    "host": "localhost:3000",
+    "session": {
+        "secret": "YourSecretGoesHere"
+    }
 }

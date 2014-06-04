@@ -5,4 +5,21 @@ link(rel="stylesheet", type="text/css", href="http://#{host}/#{theme}/stylesheet
         strong Absent
         span  -&nbsp;
         em Chater avec un commercial
-    .chat Contact Form
+    .chat
+        .header
+            a.close Close
+        form(action="http://#{host}/front/hotline-box", method="post")
+            input(type="hidden", name="_csrf", value="#{csrf}")
+            .control-group
+                label.control-label(for='message_name') Your Name
+                .controls
+                    input#message_name.input-xxlarge(type='text', placeholder='Name', name='message[name]', value=message.name)
+            .control-group
+                label.control-label(for='message_email') Email
+                .controls
+                    input#message_email.input-xxlarge(type='text', placeholder='Email', name='message[email]', value=message.email)
+            .control-group
+                label.control-label(for='message_message') Message
+                .controls
+                    textarea#message_message.input-xxlarge(placeholder='Enter message', rows='6', name='message[message]')=message.message
+            button.btn(type='submit') Send Message

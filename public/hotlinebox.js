@@ -65,7 +65,7 @@
 
         this.init = function() {
             var object = this;
-            jqLikeLibrary.get(this.host+'/hotline-box', function(data) {
+            jqLikeLibrary.get(this.host+'/front/hotline-box', function(data) {
                 jqLikeLibrary.append(document.body, data);
                 object.initEvent();
             });
@@ -74,12 +74,13 @@
         this.initEvent = function() {
             var state = document.querySelector("#hotline-js .state");
             var chat = document.querySelector("#hotline-js .chat");
+            var closeChat = document.querySelector("#hotline-js .chat .close");
 
             jqLikeLibrary.on(state, 'click', function() {
                 state.style.display = 'none';
                 chat.style.display = 'block';
             });
-            jqLikeLibrary.on(chat, 'click', function() {
+            jqLikeLibrary.on(closeChat, 'click', function() {
                 state.style.display = 'block';
                 chat.style.display = 'none';
             });
