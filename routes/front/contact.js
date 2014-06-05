@@ -1,5 +1,6 @@
 var express   = require('express');
 var validator = require('validator');
+
 var globals   = require('../../globals');
 
 var router = express.Router();
@@ -22,6 +23,7 @@ function validate(message) {
 router.post('/', function(req, res) {
     var message = req.body.message;
     console.log(message);
+    throw "Toto";
     /*res.render('hotlinebox', {
         host: req.app.get('config').get('host'),
         theme: req.app.get('config').get('theme'),

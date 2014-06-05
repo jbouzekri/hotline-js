@@ -5,7 +5,10 @@ var router = express.Router();
 
 /* GET hotlinebox */
 router.get('/', function(req, res) {
-    res.render('hotlinebox', {
+    template = 'contact';
+    if (globals.online) template = 'chatbox';
+
+    res.render(template, {
         host: req.app.get('config').get('host'),
         theme: req.app.get('config').get('theme'),
         csrf: req.csrfToken(),
