@@ -1,35 +1,35 @@
 var express   = require('express');
-var validator = require('validator');
+var validator = require('express-validator');
 
 var globals   = require('../../globals');
 
 var router = express.Router();
 
-function validate(message) {
-    var errors = [];
-
-    validator.error = function(msg) {
-        errors.push(msg);
-    };
-
-    validator.check(message.name, 'Please enter your name').len(1, 100);
-    validator.check(message.email, 'Please enter a valid email address').isEmail();
-    validator.check(message.message, 'Please enter a valid message').len(1, 1000);
-
-    return errors;
-}
 
 /* GET hotlinebox */
 router.post('/', function(req, res) {
     var message = req.body.message;
-    console.log(message);
-    throw "Toto";
-    /*res.render('hotlinebox', {
-        host: req.app.get('config').get('host'),
-        theme: req.app.get('config').get('theme'),
-        csrf: req.csrfToken(),
-        message: {"name":"","email":"","message":""}
-    });*/
+
+    req.assert(['message', 'name'], 'Please enter your name').len(1, 100);
+    req.assert(['message', 'email'], 'Please enter a valid email address').isEmail();
+    req.assert(['message', 'message'], 'Please enter a valid message').len(1, 10000);
+
+    var hasError = req.validationErrors().length;
+    var errors = req.validationErrors(true);
+console.log(errors);
+    if (hasError) {
+        res.render('contact', {
+            theme: req.app.get('config').get('theme'),
+            message: message,
+            csrf: req.csrfToken(),
+            errors: errors
+        });
+    } else {
+        res.render('contact_success', {
+            theme: req.app.get('config').get('theme')
+        });
+    }
+    /**/
 });
 
 module.exports = router;

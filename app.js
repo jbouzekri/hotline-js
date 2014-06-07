@@ -3,6 +3,7 @@ var cookieParser = require('cookie-parser');
 var session      = require('express-session');
 var bodyParser   = require('body-parser');
 var csrf         = require('csurf');
+var validator    = require('express-validator');
 
 var app = express();
 
@@ -22,6 +23,7 @@ app.set('view engine', 'jade');
 
 // Body parser for form post and csrf token management
 app.use(bodyParser());
+app.use(validator());
 app.use(cookieParser()); // required before session.
 app.use(session({
     secret: config.get('session').secret

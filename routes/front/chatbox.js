@@ -5,18 +5,17 @@ var router = express.Router();
 
 /* GET hotlinebox */
 router.get('/', function(req, res) {
-    template = 'contact';
+    var template = 'contact';
     if (globals.online) template = 'chatbox';
 
+    var message = {name:"",email:"",message:""};
+    var errors = [];
+
     res.render(template, {
-        host: req.app.get('config').get('host'),
         theme: req.app.get('config').get('theme'),
         csrf: req.csrfToken(),
-        message: {
-            "name":"",
-            "email":"",
-            "message":""
-        }
+        message: message,
+        errors: errors
     });
 });
 

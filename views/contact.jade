@@ -1,8 +1,39 @@
 extends base
 block append hotline-js
-    .state
-        img(src="http://#{host}/#{theme}/offline.png", width="16")
-        strong Absent
-        span  -&nbsp;
-        em Chater avec un commercial
-        a(href="http://www.google.fr") Google
+    form(action="/front/contact", method="post")
+        input(type="hidden", name="_csrf", value="#{csrf}")
+        if errors['message.name']
+            .form-group.has-error
+                label.control-label(for='message_name') Your Name
+                div.alert.alert-danger #{errors['message.name'].msg}
+                .controls
+                    input#message_name.form-control(type='text', placeholder='Name', name='message[name]', value=message.name)
+        else
+            .form-group
+                label.control-label(for='message_name') Your Name
+                .controls
+                    input#message_name.form-control(type='text', placeholder='Name', name='message[name]', value=message.name)
+        if errors['message.email']
+            .form-group.has-error
+                label.control-label(for='message_email') Email
+                div.alert.alert-danger #{errors['message.email'].msg}
+                .controls
+                    input#message_email.form-control(type='text', placeholder='Email', name='message[email]', value=message.email)
+        else
+            .form-group
+                label.control-label(for='message_email') Email
+                .controls
+                    input#message_email.form-control(type='text', placeholder='Email', name='message[email]', value=message.email)
+
+        if errors['message.message']
+            .form-group.has-error
+                label.control-label(for='message_message') Message
+                div.alert.alert-danger #{errors['message.message'].msg}
+                .controls
+                    textarea#message_message.form-control(placeholder='Enter message', rows='6', name='message[message]')=message.message
+        else
+            .form-group
+                label.control-label(for='message_message') Message
+                .controls
+                    textarea#message_message.form-control(placeholder='Enter message', rows='6', name='message[message]')=message.message
+        button.btn.btn-default(type='submit') Send Message

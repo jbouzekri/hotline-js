@@ -1,5 +1,5 @@
 var globals = {
-    online: true
+    online: false
 };
 
 module.exports = globals;
