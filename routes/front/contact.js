@@ -14,10 +14,9 @@ router.post('/', function(req, res) {
     req.assert(['message', 'email'], 'Please enter a valid email address').isEmail();
     req.assert(['message', 'message'], 'Please enter a valid message').len(1, 10000);
 
-    var hasError = req.validationErrors().length;
     var errors = req.validationErrors(true);
-console.log(errors);
-    if (hasError) {
+
+    if (errors !== null) {
         res.render('contact', {
             theme: req.app.get('config').get('theme'),
             message: message,
