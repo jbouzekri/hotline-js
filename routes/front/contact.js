@@ -17,16 +17,13 @@ router.post('/', function(req, res) {
     var errors = req.validationErrors(true);
 
     if (errors !== null) {
-        res.render('contact', {
-            theme: req.app.get('config').get('theme'),
+        res.render('front/contact', {
             message: message,
             csrf: req.csrfToken(),
             errors: errors
         });
     } else {
-        res.render('contact_success', {
-            theme: req.app.get('config').get('theme')
-        });
+        res.render('front/contact_success');
     }
     /**/
 });

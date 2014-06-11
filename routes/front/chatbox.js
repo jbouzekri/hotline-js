@@ -11,8 +11,7 @@ router.get('/', function(req, res) {
     var message = {name:"",email:"",message:""};
     var errors = [];
 
-    res.render(template, {
-        theme: req.app.get('config').get('theme'),
+    res.render('front/'+template, {
         csrf: req.csrfToken(),
         message: message,
         errors: errors

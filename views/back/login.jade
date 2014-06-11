@@ -1,0 +1,17 @@
+extends layout
+block append content
+    .row
+        .col-md-4
+        .col-md-4
+            if message
+                p #{message}
+            form(role="form", method="post", action="/admin/login")
+                input(type="hidden", name="_csrf", value="#{csrf}")
+                .form-group
+                    label(for="login") Login
+                    input(type="text", class="form-control", id="login", placeholder="Login", name="username")
+                .form-group
+                    label(for="password") Password
+                    input(type="text", class="form-control", id="password", placeholder="Password", name="password")
+                button(type="submit", class="btn btn-default") Log in
+        .col-md-4

@@ -1,9 +1,11 @@
-html
+doctype html
+html(lang="en")
     head
-        link(rel="stylesheet", type="text/css", href="/#{theme}/bootstrap.min.css")
-        link(rel="stylesheet", type="text/css", href="/#{theme}/test.css")
+        block stylesheets
+            link(rel="stylesheet", type="text/css", href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css")
+            link(rel="stylesheet", type="text/css", href="/#{theme}/test.css")
     body
-        #hotline-js
-            block hotline-js
-        script(src="//code.jquery.com/jquery-1.11.0.min.js")
-        script(type="text/javascript", src="/bootstrap.min.js")
+        block body
+        block javascripts
+            script(src="//code.jquery.com/jquery-1.11.0.min.js")
+            script(type="text/javascript", src="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js")

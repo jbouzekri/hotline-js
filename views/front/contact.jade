@@ -1,4 +1,4 @@
-extends base
+extends layout
 block append hotline-js
     form(action="/front/contact", method="post")
         input(type="hidden", name="_csrf", value="#{csrf}")
