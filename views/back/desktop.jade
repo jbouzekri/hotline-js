@@ -1,0 +1,11 @@
+extends layout
+block append stylesheets
+    link(rel="stylesheet", type="text/css", href="stylesheets/jquery-ui-1.10.4.custom.min.css")
+    link(rel="stylesheet", type="text/css", href="stylesheets/desktop.css")
+block append javascripts
+    script(src="javascripts/jquery-ui-1.10.4.custom.min.js")
+    script(src="javascripts/window.js")
+    script(src="javascripts/desktop.js")
+block append content
+    div desktop
+        button(class="btn btn-primary" id="create-window") Create window

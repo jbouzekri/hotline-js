@@ -8,9 +8,8 @@ router.get('/logout', function(req, res){
   req.logout();
   res.redirect('/admin');
 }).get('/',
-    //passport.authenticate('local'),
     function(req, res) {
-        res.send('Desktop');
+        res.render('back/desktop');
 });
 
 module.exports = router;
