@@ -1,12 +1,12 @@
 var express = require('express');
-var globals = require('../../globals');
+var online_state = require('../../online_state');
 
 var router = express.Router();
 
 /* GET hotlinebox */
 router.get('/', function(req, res) {
     var template = 'contact';
-    if (globals.online) template = 'chatbox';
+    if (online_state.online) template = 'chatbox';
 
     var message = {name:"",email:"",message:""};
     var errors = [];

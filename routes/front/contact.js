@@ -1,7 +1,7 @@
 var express   = require('express');
 var validator = require('express-validator');
 
-var globals   = require('../../globals');
+var online_state = require('../../online_state');
 
 var router = express.Router();
 

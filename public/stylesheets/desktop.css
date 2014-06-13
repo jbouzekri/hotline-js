@@ -9,3 +9,11 @@
 .ui-icon-gripsmall-diagonal-se {
     background-position: -64px -224px;
 }
+
+.offline-state .glyphicon {
+    color: red;
+}
+
+.online-state .glyphicon {
+    color: green;
+}

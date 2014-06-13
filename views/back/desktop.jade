@@ -7,5 +7,25 @@ block append javascripts
     script(src="javascripts/window.js")
     script(src="javascripts/desktop.js")
 block append content
-    div desktop
+    header
+        nav.nav.navbar-default.navbar-static-top
+            .container-fluid
+                .navbar-header
+                    a.navbar-brand(href="#") HotlineJS
+                ul.nav.navbar-nav.navbar-right
+                    li
+                        a(href="/admin/toggle-online", id="toggle-online", data-online="#{online}")
+                            if !online
+                                .offline-state
+                                    span.glyphicon.glyphicon-stop
+                                    span Currently Offline
+                            else
+                                .online-state
+                                    span.glyphicon.glyphicon-play
+                                    span Online since #{onlineDate}
+                    li
+                        a(href="/admin/logout")
+                            span.glyphicon.glyphicon-off
+    .container-fluid
+        div desktop
         button(class="btn btn-primary" id="create-window") Create window
