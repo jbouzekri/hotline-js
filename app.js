@@ -6,8 +6,11 @@ var csrf         = require('csurf');
 var validator    = require('express-validator');
 var passport     = require('passport');
 var flash        = require('connect-flash');
+var onlineState  = require('./online_state.js');
 
-var app = express();
+var app  = express();
+var http = require('http').Server(app);
+var io   = require('socket.io')(http);
 
 // Load env variable
 var environment = process.env.NODE_ENV || "dev";
@@ -66,10 +69,18 @@ app.use('/admin', desktop);
 
 
 app.use(function(err, req, res, next){
+  console.log(req);
   console.error(err.stack);
   res.send(500, 'Something broke!');
 });
 
-var server = app.listen(3000, function() {
+io.on('connection', function(socket){
+  socket.on('online-toggle', function(msg){
+      var online = onlineState.toggleState().online;
+      socket.emit('online-state', onlineState);
+  });
+});
+
+var server = http.listen(3000, function(){
     console.log('Listening on port %d', server.address().port);
 });
