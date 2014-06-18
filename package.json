@@ -15,8 +15,9 @@
     "nconf": "0.6.9",
     "passport": "0.2.0",
     "passport-local": "1.0.0",
-    "session.socket.io": "^0.1.6",
+    "connect": "2.7.1",
     "socket.io": "1.0.4",
+    "session.socket.io-express4": "0.0.3",
     "underscore": "1.6.0",
     "winston": "0.7.3"
   },

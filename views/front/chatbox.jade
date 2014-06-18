@@ -1,3 +1,11 @@
 extends layout
+block append javascripts
+    script(src="/socket.io/socket.io.js")
+    script(src="/javascripts/chat.js")
 block append hotline-js
-    Chat box online open
+    #chat-items
+        ul
+    form#chat-form.form-inline
+        .form-group
+            textarea.form-control(placeholder="Ask a question ?")
+        button.btn.btn-default Send

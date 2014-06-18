@@ -1,16 +1,20 @@
 var express      = require('express');
-var cookieParser = require('cookie-parser');
+var cookieParser = require('cookie-parser')();
 var session      = require('express-session');
 var bodyParser   = require('body-parser');
 var csrf         = require('csurf');
 var validator    = require('express-validator');
 var passport     = require('passport');
+var connect      = require('connect');
 var flash        = require('connect-flash');
 var onlineState  = require('./online_state.js');
+var sessionStore = new connect.middleware.session.MemoryStore();
 
-var app  = express();
-var http = require('http').Server(app);
-var io   = require('socket.io')(http);
+var app            = express();
+var http           = require('http').Server(app);
+var io             = require('socket.io')(http);
+var SessionSockets = require('session.socket.io-express4');
+sessionSockets     = new SessionSockets(io, sessionStore, cookieParser);
 
 // Load env variable
 var environment = process.env.NODE_ENV || "dev";
@@ -33,9 +37,11 @@ var ensureAuthenticated = require('./config_passport')(config);
 // Body parser for form post and csrf token management
 app.use(bodyParser());
 app.use(validator());
-app.use(cookieParser()); // required before session.
+app.use(cookieParser); // required before session.
 app.use(session({
-    secret: config.get('session').secret
+    secret: config.get('session').secret,
+    store: sessionStore,
+    cookie: { maxAge: 3600000 }
   //, proxy: true // if you do SSL outside of node.
 }));
 app.use(flash());
@@ -74,10 +80,18 @@ app.use(function(err, req, res, next){
   res.send(500, 'Something broke!');
 });
 
-io.on('connection', function(socket){
+sessionSockets.on('connection', function (err, socket, session) {
+  console.log(session);
+
   socket.on('online-toggle', function(msg){
-      var online = onlineState.toggleState().online;
+      if (session.passport.user) {
+          var online = onlineState.toggleState().online;
+      }
       socket.emit('online-state', onlineState);
+  });
+
+  socket.on('chat-message', function(msg){
+      console.log(msg);
   });
 });
 
