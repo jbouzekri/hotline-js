@@ -105,7 +105,9 @@ sessionSockets.on('connection', function (err, socket, session) {
   });
 
   socket.on('chat-message', function(msg) {
-      io.to('operators').emit('chat-message', operator.buildMessage(session, msg));
+      if (operator.validateMessage(msg)) {
+        io.to('operators').emit('chat-message', operator.buildMessage(session, msg));
+      }
       console.log(msg);
   });
 });

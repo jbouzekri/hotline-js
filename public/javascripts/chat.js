@@ -39,6 +39,14 @@
         reloadCookie: function() {
             var cookieValue = "pseudo;"+this.pseudo;
             document.cookie = this.cookieName + "=" + cookieValue;
+        },
+
+        buildMessage: function(msg) {
+            return {
+                msg: msg,
+                pseudo: this.pseudo,
+                date: new Date()
+            };
         }
     }
 
@@ -59,8 +67,9 @@
     });
 
     $('#chat-form').submit(function(event){
-        event.preventDefault()
-        chatManager.send($(this).find('textarea').val());
+        event.preventDefault();
+        var message = $(this).find('textarea').val()
+        chatManager.send(chatManager.buildMessage(message));
     });
 
 })(window, document, jQuery);
