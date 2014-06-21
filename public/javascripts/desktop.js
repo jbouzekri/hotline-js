@@ -10,6 +10,10 @@
         $('#toggle-online .'+stateClass).show();
     });
 
+    socket.on('chat-message', function(msg){
+        console.log(msg);
+    });
+
     $('#toggle-online').click(function(event){
         event.preventDefault();
         socket.emit('online-toggle', 'toggle');

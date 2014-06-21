@@ -8,6 +8,8 @@ var passport     = require('passport');
 var connect      = require('connect');
 var flash        = require('connect-flash');
 var onlineState  = require('./online_state.js');
+var uid          = require('uid2');
+var operator     = require('./operator.js');
 var sessionStore = new connect.middleware.session.MemoryStore();
 
 var app            = express();
@@ -81,16 +83,29 @@ app.use(function(err, req, res, next){
 });
 
 sessionSockets.on('connection', function (err, socket, session) {
-  console.log(session);
+
+  // Store a custom id to identify user without its session id in its session
+  if (typeof session != "undefined"
+        && typeof session.customerId == "undefined") {
+    uid(24, function(err, secret){
+        session.customerId = secret;
+    });
+  }
+
+  // Operators join all the same room to receive all message
+  if (operator.isOperator(session)) {
+      socket.join('operators');
+  }
 
   socket.on('online-toggle', function(msg){
-      if (session.passport.user) {
+      if (operator.isOperator(session)) {
           var online = onlineState.toggleState().online;
       }
       socket.emit('online-state', onlineState);
   });
 
-  socket.on('chat-message', function(msg){
+  socket.on('chat-message', function(msg) {
+      io.to('operators').emit('chat-message', operator.buildMessage(session, msg));
       console.log(msg);
   });
 });
