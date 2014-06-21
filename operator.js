@@ -1,5 +1,3 @@
-
-
 module.exports.isOperator = function(session) {
     if (typeof session !== "undefined"
         && typeof session.passport !== "undefined"
