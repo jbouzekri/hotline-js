@@ -1,4 +1,26 @@
 (function(window, document, $){
+
+    var DesktopManager = {
+        updateUsers: function (data) {
+            var customerIds = [];
+            var userTabParent = $('#users ul');
+            for (id in data) {
+                var customerId = data[id].customerId;
+                var $customerTab = $('#tab-'+customerId);
+                if ($customerTab.length === 0) {
+                    userTabParent.append('<li id="tab-'+customerId+'">undefined</li>');
+                }
+                customerIds.push(customerId);
+            }
+            userTabParent.find('li').each(function(index){
+                var customerId = $(this).attr('id').slice(4);
+                if (customerIds.indexOf(customerId) === -1) {
+                    $(this).remove();
+                }
+            });
+        }
+    };
+
     $('#create-window').click(function(){
         jwm.createWindow();
     });
@@ -10,6 +32,7 @@
     });
 
     socket.on('chat-state', function (chatState) {
+        DesktopManager.updateUsers(chatState);
         console.log(chatState);
     });
 
