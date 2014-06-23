@@ -84,32 +84,56 @@ app.use(function(err, req, res, next){
 
 sessionSockets.on('connection', function (err, socket, session) {
 
-  // Store a custom id to identify user without its session id in its session
-  if (typeof session != "undefined"
-        && typeof session.customerId == "undefined") {
-    uid(24, function(err, secret){
-        session.customerId = secret;
+    console.log('[socket #'+socket.id+'] connected');
+
+    // Store a custom id to identify user without its session id in its session
+    if (typeof session != "undefined"
+          && typeof session.customerId == "undefined") {
+      session.customerId = uid(24);
+      console.log('[socket #'+socket.id+'] Session customer id #'+session.customerId+' generated');
+    }
+
+
+    // Operators join all the same room to receive all message
+    if (operator.isOperator(session)) {
+        console.log('[socket #'+socket.id+'] Operator detected');
+        socket.join('operators');
+        operator.registerOperator(socket, session);
+    } else {
+        console.log('[socket #'+socket.id+'] User detected');
+          // Register user socket for future reference
+        operator.registerUser(socket, session);
+    }
+
+    socket.on('chat-state', function(msg) {
+        console.log('[socket #'+socket.id+'] chat-state message received');
+        socket.emit('chat-state', operator.buildStateMessage());
+        console.log('[socket #'+socket.id+'] chat-state message sent');
     });
-  }
 
-  // Operators join all the same room to receive all message
-  if (operator.isOperator(session)) {
-      socket.join('operators');
-  }
+    socket.on('online-toggle', function(msg){
+        console.log('[socket #'+socket.id+'] online-toggle message received');
+        if (operator.isOperator(session)) {
+            var online = onlineState.toggleState().online;
+        }
+        socket.emit('online-state', onlineState);
+        console.log('[socket #'+socket.id+'] online-toggle message sent');
+    });
 
-  socket.on('online-toggle', function(msg){
-      if (operator.isOperator(session)) {
-          var online = onlineState.toggleState().online;
-      }
-      socket.emit('online-state', onlineState);
-  });
+    socket.on('chat-message', function(msg) {
+        if (operator.validateMessage(msg)) {
+          io.to('operators').emit('chat-message', operator.buildMessage(session, msg));
+        }
+    });
 
-  socket.on('chat-message', function(msg) {
-      if (operator.validateMessage(msg)) {
-        io.to('operators').emit('chat-message', operator.buildMessage(session, msg));
-      }
-      console.log(msg);
-  });
+    socket.on('answer-message', function(msg) {
+        var answerSocket = operator.findUserSocket(msg.customerId);
+        answerSocket.emit('answer-message', msg);
+    });
+
+    socket.on('disconnect', function(){
+        operator.deleteSocket(socket);
+    });
 });
 
 var server = http.listen(3000, function(){

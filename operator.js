@@ -1,3 +1,45 @@
+var userSockets = [];
+var operatorSockets = [];
+
+module.exports.buildStateMessage = function() {
+    var customerIds = [];
+    var stateMessage = [];
+
+    for (i in userSockets) {
+        if (customerIds.indexOf(userSockets[i].customerId) === -1) {
+            stateMessage.push({
+                socketId: i,
+                customerId: userSockets[i].customerId
+            });
+
+            customerIds.push(userSockets[i].customerId);
+        }
+    }
+
+    return stateMessage;
+}
+
+module.exports.deleteSocket = function(socket) {
+    var i = userSockets.indexOf(socket);
+    if (i !== -1) {
+        delete userSockets[i];
+    }
+    var j = operatorSockets.indexOf(socket);
+    if (j !== -1) {
+        delete operatorSockets[i];
+    }
+}
+
+module.exports.registerUser = function(socket, session) {
+    socket.customerId = session.customerId;
+    userSockets[socket.id] = socket;
+};
+
+module.exports.registerOperator = function(socket, session) {
+    socket.customerId = session.customerId;
+    operatorSockets[socket.id] = socket;
+};
+
 module.exports.isOperator = function(session) {
     if (typeof session !== "undefined"
         && typeof session.passport !== "undefined"
@@ -21,6 +63,10 @@ module.exports.validateMessage = function(msg) {
     }
 
     if (typeof msg.pseudo === "undefined") {
+        return false;
+    }
+
+    if (typeof msg.url === "undefined") {
         return false;
     }
 

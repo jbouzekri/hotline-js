@@ -5,7 +5,7 @@
         cookieName: "hotlinejs",
 
         send: function(msg) {
-            this.getSocket().emit('chat-message', msg);
+            this.getSocket().emit('chat-message', this.buildMessage(msg));
         },
 
         getSocket: function() {
@@ -17,11 +17,10 @@
         },
 
         initSocket: function() {
-            newSocket = io();
+            newSocket = io({reconnectionAttempts: 5});
             newSocket.on('chat-message', function(msg){
                 $('#chat-items ul').append('<li>'+msg+'</li>')
             });
-
             return newSocket;
         },
 
@@ -45,7 +44,8 @@
             return {
                 msg: msg,
                 pseudo: this.pseudo,
-                date: new Date()
+                date: new Date(),
+                url: window.location.href
             };
         }
     }
@@ -69,7 +69,7 @@
     $('#chat-form').submit(function(event){
         event.preventDefault();
         var message = $(this).find('textarea').val()
-        chatManager.send(chatManager.buildMessage(message));
+        chatManager.send(message);
     });
 
 })(window, document, jQuery);
