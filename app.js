@@ -120,15 +120,17 @@ sessionSockets.on('connection', function (err, socket, session) {
         console.log('[socket #'+socket.id+'] online-toggle message sent');
     });
 
-    socket.on('chat-message', function(msg) {
+    socket.on('user-message', function(msg) {
         if (operator.validateMessage(msg)) {
-          io.to('operators').emit('chat-message', operator.buildMessage(session, msg));
+          io.to('operators').emit('user-message', operator.buildMessage(session, msg));
         }
     });
 
-    socket.on('answer-message', function(msg) {
+    socket.on('operator-message', function(msg) {
         var answerSocket = operator.findUserSocket(msg.customerId);
-        answerSocket.emit('answer-message', msg);
+        if (answerSocket) {
+            answerSocket.emit('operator-message', msg.msg);
+        }
     });
 
     socket.on('disconnect', function(){

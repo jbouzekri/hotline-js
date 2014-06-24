@@ -5,7 +5,7 @@
         cookieName: "hotlinejs",
 
         send: function(msg) {
-            this.getSocket().emit('chat-message', this.buildMessage(msg));
+            this.getSocket().emit('user-message', this.buildMessage(msg));
         },
 
         getSocket: function() {
@@ -18,7 +18,7 @@
 
         initSocket: function() {
             newSocket = io({reconnectionAttempts: 5});
-            newSocket.on('chat-message', function(msg){
+            newSocket.on('operator-message', function(msg){
                 $('#chat-items ul').append('<li>'+msg+'</li>')
             });
             return newSocket;

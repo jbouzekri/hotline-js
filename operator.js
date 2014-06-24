@@ -19,6 +19,16 @@ module.exports.buildStateMessage = function() {
     return stateMessage;
 }
 
+module.exports.findUserSocket = function(customerId) {
+    for (i in userSockets) {
+        if (userSockets[i].customerId == customerId) {
+            return userSockets[i];
+        }
+    }
+
+    return false;
+}
+
 module.exports.deleteSocket = function(socket) {
     var i = userSockets.indexOf(socket);
     if (i !== -1) {
