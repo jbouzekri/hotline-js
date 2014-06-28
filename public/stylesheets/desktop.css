@@ -1,8 +1,11 @@
 .window {
     width: 300px;
     height: 150px;
+    z-index: 0;
 }
-
+.window.selected {
+    z-index: 10;
+}
 .ui-icon, .ui-widget-content .ui-icon {
     background-image: url(../images/ui-icons_222222_256x240.png);
 }

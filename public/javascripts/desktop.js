@@ -2,7 +2,7 @@
 
     var jwm = {
         template: ' \
-<div class="window panel panel-default unread"> \
+<div class="window panel panel-default"> \
   <div class="panel-heading">Panel heading without title</div> \
   <div class="panel-body"> \
     <ul></ul>\n\
@@ -12,25 +12,40 @@
 </div>',
 
         createWindow: function (customerId) {
+            // Append the window to the
             var jWin = $(this.template);
             jWin.attr('id', 'window-'+customerId);
             jWin.data('customerId', customerId);
             jWin.resizable();
-            jWin.draggable();
+            jWin.draggable({
+                drag: function( event, ui ) {
+                    if (!$(this).hasClass('selected')) {
+                        jwm.selectWindow($(this));
+                    }
+                }
+            });
             $('body').append(jWin);
+
+            // Select the newly created window to be over the others
+            this.selectWindow(jWin);
 
             return jWin;
         },
 
         addOrUpdateWindow: function(customerId) {
             var $customerWin = $('#window-'+customerId);
-            if ($customerWin.length > 0) {
+            if ($customerWin.length > 0 && !$customerWin.hasClass('selected')) {
                 $customerWin.addClass('unread');
             } else {
                 $customerWin = this.createWindow(customerId);
             }
 
             return $customerWin;
+        },
+
+        selectWindow: function(windowObject) {
+            $('.window').removeClass('selected');
+            windowObject.addClass('selected');
         },
 
         addMessage: function ($customerWin, msg) {
@@ -49,13 +64,16 @@
             var pseudo = pseudo || "undefined";
             var $customerTab = $('#tab-'+customerId);
             if ($customerTab.length === 0) {
-                this.userTabParent.append('<li id="tab-'+customerId+'" class="unread">undefined</li>');
+                this.userTabParent.append('<li id="tab-'+customerId+'" data-customerId="'+customerId+'" class="unread">undefined</li>');
             }
         },
 
         updateUnreadState: function(customerId) {
-            var $customerTab = $('#tab-'+customerId);
-            $customerTab.addClass('unread');
+            var $customerWindow = $('#window-'+customerId);
+            if (!$customerWindow.hasClass('selected')) {
+                var $customerTab = $('#tab-'+customerId);
+                $customerTab.addClass('unread');
+            }
         },
 
         updateUsers: function (data) {
@@ -86,7 +104,6 @@
 
     socket.on('chat-state', function (chatState) {
         DesktopManager.updateUsers(chatState);
-        console.log(chatState);
     });
 
     socket.on('online-state', function(onlineState){
@@ -124,5 +141,11 @@
 
     $('#reload-state').click(function(event){
         socket.emit('chat-state', {});
+    });
+
+    $(document).on('click', '.window', function(event){
+        event.stopPropagation();
+        event.preventDefault();
+        jwm.selectWindow($(this));
     });
 })(window, document, jQuery);
