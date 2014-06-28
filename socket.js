@@ -9,7 +9,11 @@ module.exports.listen = function(app, sessionStore, port, callback) {
     var io             = require('socket.io')(http);
     sessionSockets     = new SessionSockets(io, sessionStore, cookieParser);
 
-    sessionSockets.on('connection', function (err, socket, session) {
+    sessionSockets.on('connection', function (error, socket, session) {
+        if (error) {
+            // TODO : error handling
+            return;
+        }
 
         console.log('[socket #'+socket.id+'] connected');
 
