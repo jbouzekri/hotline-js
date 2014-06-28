@@ -19,7 +19,7 @@
         initSocket: function() {
             newSocket = io({reconnectionAttempts: 5});
             newSocket.on('operator-message', function(msg){
-                $('#chat-items ul').append('<li>'+msg+'</li>')
+                $('#chat-items ul').append('<li>'+msg.msg+'</li>')
             });
             return newSocket;
         },

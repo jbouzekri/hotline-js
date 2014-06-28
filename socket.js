@@ -53,14 +53,14 @@ module.exports.listen = function(app, sessionStore, port, callback) {
 
         socket.on('user-message', function(msg) {
             if (manager.validateMessage(msg)) {
-              io.to('managers').emit('user-message', manager.buildMessage(session, msg));
+              io.to('managers').emit('user-message', manager.buildUserMessage(session, msg));
             }
         });
 
         socket.on('manager-message', function(msg) {
             var answerSocket = manager.findUserSocket(msg.customerId);
             if (answerSocket) {
-                answerSocket.emit('manager-message', msg.msg);
+                answerSocket.emit('manager-message', manager.buildOperatorMessage(session, msg));
             }
         });
 

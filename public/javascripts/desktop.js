@@ -2,7 +2,7 @@
 
     var jwm = {
         template: ' \
-<div class="window panel panel-default"> \
+<div class="window panel panel-default" style="display: none;"> \
   <div class="panel-heading">Panel heading without title</div> \
   <div class="panel-body"> \
     <ul></ul>\n\
@@ -15,7 +15,7 @@
             // Append the window to the
             var jWin = $(this.template);
             jWin.attr('id', 'window-'+customerId);
-            jWin.data('customerId', customerId);
+            jWin.data('customerid', customerId);
             jWin.resizable();
             jWin.draggable({
                 drag: function( event, ui ) {
@@ -26,26 +26,32 @@
             });
             $('body').append(jWin);
 
-            // Select the newly created window to be over the others
-            this.selectWindow(jWin);
-
             return jWin;
         },
 
         addOrUpdateWindow: function(customerId) {
             var $customerWin = $('#window-'+customerId);
-            if ($customerWin.length > 0 && !$customerWin.hasClass('selected')) {
-                $customerWin.addClass('unread');
-            } else {
+            if ($customerWin.length === 0) {
                 $customerWin = this.createWindow(customerId);
+            }
+            if (!$customerWin.hasClass('selected')) {
+                $customerWin.addClass('unread');
             }
 
             return $customerWin;
         },
 
         selectWindow: function(windowObject) {
+            var customerId = windowObject.data('customerid');
+
+            // Set selected class on click window
             $('.window').removeClass('selected');
             windowObject.addClass('selected');
+            windowObject.show();
+
+            // Remove unread from window and tab
+            windowObject.removeClass('unread');
+            $('#tab-'+customerId).removeClass('unread');
         },
 
         addMessage: function ($customerWin, msg) {
@@ -64,7 +70,12 @@
             var pseudo = pseudo || "undefined";
             var $customerTab = $('#tab-'+customerId);
             if ($customerTab.length === 0) {
-                this.userTabParent.append('<li id="tab-'+customerId+'" data-customerId="'+customerId+'" class="unread">undefined</li>');
+                this.userTabParent.append('<li class="tab" id="tab-'+customerId+'" data-customerid="'+customerId+'" class="unread">undefined</li>');
+            }
+
+            var $customerWindow = $('#window-'+customerId);
+            if ($customerWindow.length === 0) {
+                jwm.createWindow(customerId);
             }
         },
 
@@ -93,7 +104,9 @@
     };
 
     $('#create-window').click(function(){
-        jwm.createWindow();
+        var createdWindow = jwm.createWindow();
+        // Select the newly created window to be over the others
+        jwm.selectWindow(createdWindow);
     });
 
     var socket = io({reconnectionAttempts: 5});
@@ -103,6 +116,7 @@
     });
 
     socket.on('chat-state', function (chatState) {
+        console.log(chatState);
         DesktopManager.updateUsers(chatState);
     });
 
@@ -113,6 +127,7 @@
     });
 
     socket.on('user-message', function(msg) {
+        console.log(msg);
         var customerId = msg.customerId;
         DesktopManager.addUser(customerId);
         DesktopManager.updateUnreadState(customerId);
@@ -123,11 +138,7 @@
     $(document).on('click', '.answer-button', function(event) {
         event.preventDefault();
         var message = $(this).siblings('.answer-text').val();
-        var customerId = $(this).parents('.window.panel').data('customerId');
-        console.log({
-            customerId: customerId,
-            msg: message
-        });
+        var customerId = $(this).parents('.window.panel').data('customerid');
         socket.emit('operator-message', {
             customerId: customerId,
             msg: message
@@ -147,5 +158,15 @@
         event.stopPropagation();
         event.preventDefault();
         jwm.selectWindow($(this));
+    });
+
+    $(document).on('click', '.tab', function(event){
+        var customerId = $(this).data('customerid');
+        var customerWindow = $('#window-'+customerId);
+        if (customerWindow.is(':visible')) {
+            customerWindow.hide();
+        } else {
+            jwm.selectWindow($('#window-'+customerId));
+        }
     });
 })(window, document, jQuery);

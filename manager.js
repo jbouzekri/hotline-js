@@ -60,8 +60,14 @@ module.exports.isOperator = function(session) {
   return false;
 };
 
-module.exports.buildMessage = function(session, msg) {
+module.exports.buildUserMessage = function(session, msg) {
     msg.customerId = session.customerId;
+    msg.date = new Date();
+
+    return msg;
+};
+
+module.exports.buildOperatorMessage = function(session, msg) {
     msg.date = new Date();
 
     return msg;
