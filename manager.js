@@ -30,14 +30,8 @@ module.exports.findUserSocket = function(customerId) {
 }
 
 module.exports.deleteSocket = function(socket) {
-    var i = userSockets.indexOf(socket);
-    if (i !== -1) {
-        delete userSockets[i];
-    }
-    var j = operatorSockets.indexOf(socket);
-    if (j !== -1) {
-        delete operatorSockets[i];
-    }
+    delete userSockets[socket.id];
+    delete operatorSockets[socket.id];
 }
 
 module.exports.registerUser = function(socket, session) {

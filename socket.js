@@ -66,7 +66,9 @@ module.exports.listen = function(app, sessionStore, port, callback) {
         });
 
         socket.on('disconnect', function(){
+            console.log('[socket #'+socket.id+'] disconnected');
             manager.deleteSocket(socket);
+            io.to('managers').emit('chat-state', manager.buildStateMessage());
         });
     });
 
