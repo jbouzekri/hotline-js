@@ -6,6 +6,9 @@
 .window.selected {
     z-index: 10;
 }
+.window .tools .glyphicon {
+    color: rgb(51, 51, 51);
+}
 .ui-icon, .ui-widget-content .ui-icon {
     background-image: url(../images/ui-icons_222222_256x240.png);
 }

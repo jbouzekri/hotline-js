@@ -31,7 +31,13 @@
          */
         template: ' \
 <div class="window panel panel-default" style="display: none;"> \
-  <div class="panel-heading">Panel heading without title</div> \
+  <div class="panel-heading">\n\
+    <span class="pseudo">Undefined</span>\n\
+    <div class="pull-right tools">\n\
+        <a href="#minus" class="minus"><span class="glyphicon glyphicon-minus"></span></a>\n\
+        <a href="#remove" class="remove"><span class="glyphicon glyphicon-remove"></span></a>\n\
+    </div>\n\
+  </div> \
   <div class="panel-body"> \
     <ul></ul>\n\
     <textarea class="answer-text"></textarea>\n\
@@ -45,11 +51,14 @@
          * @param string customerId
          * @returns {$}
          */
-        createWindow: function (customerId) {
+        createWindow: function (customerId, pseudo) {
+            var pseudo = pseudo || "Undefined";
+
             // Chat Window jquery object
             var jWin = $(this.template);
             jWin.attr('id', 'window-'+customerId);
-            jWin.data('customerid', customerId);
+            jWin.attr('data-customerid', customerId);
+            this.updatePseudo(jWin, pseudo);
             // Resizable and draggable
             jWin.resizable();
             jWin.draggable({
@@ -60,17 +69,43 @@
                     }
                 }
             });
+            jWin.find('.minus').click(function(event){
+                event.stopPropagation();
+                event.preventDefault();
+                var winCustomerId = $(this).parents('.window').data('customerid');
+                jwm.unselectWindow($('#window-'+winCustomerId));
+                DesktopManager.toggleTab($('#tab-'+winCustomerId));
+            });
+            jWin.find('.remove').click(function(event){
+                event.stopPropagation();
+                event.preventDefault();
+                var winCustomerId = $(this).parents('.window').data('customerid');
+                $('#window-'+winCustomerId).remove();
+                $('#tab-'+winCustomerId).remove();
+            });
             // Click event to select on click
             jWin.click(function(event){
                 event.stopPropagation();
                 event.preventDefault();
-                this.selectWindow($(this));
+                jwm.selectWindow($(this));
             });
 
             // Append to DOM
             $('body').append(jWin);
 
             return jWin;
+        },
+
+        /**
+         * Update the pseudo
+         *
+         * @param {$} windowObject
+         * @param {string} pseudo
+         *
+         * @returns {undefined}
+         */
+        updatePseudo: function (windowObject, pseudo) {
+            windowObject.find('.pseudo').html(pseudo);
         },
 
         /**
@@ -87,6 +122,31 @@
             }
 
             return false;
+        },
+
+        /**
+         * Toggle a window
+         *
+         * @param {$} windowObject
+         * @returns {undefined}
+         */
+        toggleWindow: function(windowObject) {
+            if (windowObject.is(':visible')) {
+                jwm.unselectWindow(windowObject);
+            } else {
+                jwm.selectWindow(windowObject);
+            }
+        },
+
+        /**
+         * Unselect a window
+         *
+         * @param {$} windowObject
+         * @returns {undefined}
+         */
+        unselectWindow: function (windowObject) {
+            windowObject.hide();
+            windowObject.removeClass('selected');
         },
 
         /**
@@ -177,18 +237,18 @@
          * @returns {undefined}
          */
         addUser: function(customerId, pseudo) {
-            var pseudo = pseudo || "undefined";
+            var pseudo = pseudo || "Undefined";
 
             // The tab does not exist. Add one.
             var $customerTab = $('#tab-'+customerId);
             if ($customerTab.length === 0) {
-                this.userTabParent.append('<li class="tab unread" id="tab-'+customerId+'" data-customerid="'+customerId+'">undefined</li>');
+                this.userTabParent.append('<li class="tab unread" id="tab-'+customerId+'" data-customerid="'+customerId+'">'+pseudo+'</li>');
             }
 
             // The window does not exist. Add one.
             var $customerWindow = $('#window-'+customerId);
             if ($customerWindow.length === 0) {
-                jwm.createWindow(customerId);
+                $customerWindow = jwm.createWindow(customerId, pseudo);
             }
         },
 
@@ -232,6 +292,22 @@
                     $(this).remove();
                 }
             });
+        },
+
+        /**
+         * Toggle a tab
+         *
+         * @param {$} tabObject
+         * @returns {undefined}
+         */
+        toggleTab: function (tabObject) {
+            if (tabObject.hasClass('selected')) {
+                tabObject.removeClass('selected');
+            } else {
+                $('.tab').removeClass('selected');
+                tabObject.removeClass('unread');
+                tabObject.addClass('selected');
+            }
         }
     };
 
@@ -329,19 +405,9 @@
     $(document).on('click', '.tab', function(event){
         var customerId = $(this).data('customerid');
         var $customerWindow = $('#window-'+customerId);
-        if ($customerWindow.is(':visible')) {
-            $customerWindow.hide();
-            $customerWindow.removeClass('selected');
-        } else {
-            jwm.selectWindow($customerWindow);
-        }
+        jwm.toggleWindow($customerWindow);
+
         var $customerTab = $('#tab-'+customerId);
-        if ($customerTab.hasClass('selected')) {
-            $customerTab.removeClass('selected');
-        } else {
-            $('.tab').removeClass('selected');
-            $customerTab.removeClass('unread');
-            $customerTab.addClass('selected');
-        }
+        DesktopManager.toggleTab($customerTab);
     });
 })(window, document, jQuery);
