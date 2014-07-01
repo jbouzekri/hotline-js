@@ -12,7 +12,8 @@ router.get('/logout', function(req, res){
     function(req, res) {
         res.render('back/desktop', {
             online: online_state.online,
-            onlineDate: online_state.startDate
+            onlineDate: online_state.startDate,
+            debug: req.app.get('config').get('debug')
         });
 });
 

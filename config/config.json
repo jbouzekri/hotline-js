@@ -1,4 +1,5 @@
 {
+    "debug": true,
     "console_log_level": "verbose",
     "file_log_level": "verbose",
     "theme": "default",

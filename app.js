@@ -7,7 +7,6 @@ var validator    = require('express-validator');
 var passport     = require('passport');
 var connect      = require('connect');
 var flash        = require('connect-flash');
-var onlineState  = require('./online_state.js');
 
 var sessionStore = new connect.middleware.session.MemoryStore();
 

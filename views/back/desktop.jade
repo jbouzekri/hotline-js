@@ -8,16 +8,21 @@ block append javascripts
     script(src="javascripts/desktop.js")
 block append content
     header
-        nav.nav.navbar-default.navbar-static-top
+        nav.nav.navbar-default.navbar-static-top.navbar-inverse
             .container-fluid
                 .navbar-header
                     a.navbar-brand(href="#") HotlineJS
+                #user-tabs.nav.navbar-nav
+                    ul
                 ul.nav.navbar-nav.navbar-right
+                    li
+                        a#reload-state(href="#reload-state")
+                            span.glyphicon.glyphicon-repeat
                     li
                         a(href="/admin/toggle-online", id="toggle-online", data-online="#{online}")
                             .state.offline-state(style="#{!online ? '' : 'display:none;'}")
                                 span.glyphicon.glyphicon-stop
-                                span Currently Offline
+                                span Offline
                             .state.online-state(style="#{online ? '' : 'display:none;'}")
                                 span.glyphicon.glyphicon-play
                                 span Online
@@ -26,8 +31,6 @@ block append content
                             span.glyphicon.glyphicon-off
     .container-fluid
         div desktop
-        div#users
-            h2 Connected users
-            ul
-        button(class="btn btn-primary" id="create-window") Create window
-        button(class="btn btn-primary" id="reload-state") Reload State
+        if debug
+            script.
+                var debug=true;

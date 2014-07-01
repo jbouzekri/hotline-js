@@ -1,6 +1,7 @@
-var cookieParser = require('cookie-parser')();
-var manager      = require('./manager.js');
-var uid          = require('uid2');
+var cookieParser   = require('cookie-parser')();
+var manager        = require('./manager.js');
+var uid            = require('uid2');
+var onlineState    = require('./online_state.js');
 var SessionSockets = require('session.socket.io-express4');
 
 module.exports.listen = function(app, sessionStore, port, callback) {
