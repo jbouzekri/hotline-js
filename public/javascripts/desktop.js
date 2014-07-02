@@ -40,9 +40,14 @@
   </div> \
   <div class="panel-body"> \
     <ul></ul>\n\
-    <textarea class="answer-text"></textarea>\n\
-    <button class="answer-button">Send</button> \
-  </div> \
+  </div> \n\
+  <div class="form-box">\n\
+    <div class="input-group">\n\
+      <textarea class="form-control answer-text" rows="2"></textarea>\n\
+      <span class="input-group-btn">\n\
+        <button class="btn btn-default answer-button" type="button">Send</button>\n\
+      </span>\n\
+  </div></div>\
 </div>',
 
         /**
