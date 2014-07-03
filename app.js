@@ -6,6 +6,7 @@ var csrf         = require('csurf');
 var validator    = require('express-validator');
 var passport     = require('passport');
 var connect      = require('connect');
+var uid          = require('uid2');
 var flash        = require('connect-flash');
 
 var sessionStore = new connect.middleware.session.MemoryStore();
@@ -44,6 +45,15 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(csrf());
+app.use(function(req, res, next) {
+    // Store a custom id in its session to identify user without its session id
+    var sess = req.session;
+    if (typeof sess.customerId == "undefined") {
+        sess.customerId = uid(24);
+    }
+    console.log('Session customer id #'+sess.customerId+' generated');
+    next();
+});
 
 // Load winston logger
 var logger = require('./logger')(config);

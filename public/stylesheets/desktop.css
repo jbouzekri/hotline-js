@@ -20,6 +20,20 @@
 .window .answer-button {
     height: 54px;
 }
+.window .panel-body {
+    overflow-y: scroll;
+    height: 150px;
+    padding: 0;
+    margin: 15px;
+}
+.window .panel-body ul {
+    list-style-type: none;
+    padding: 0;
+}
+.window .panel-body ul span {
+    font-weight: bold;
+    padding-right: 5px;
+}
 .ui-icon, .ui-widget-content .ui-icon {
     background-image: url(../images/ui-icons_222222_256x240.png);
 }

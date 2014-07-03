@@ -1,6 +1,5 @@
 var cookieParser   = require('cookie-parser')();
 var manager        = require('./manager.js');
-var uid            = require('uid2');
 var onlineState    = require('./online_state.js');
 var SessionSockets = require('session.socket.io-express4');
 
@@ -18,13 +17,10 @@ module.exports.listen = function(app, sessionStore, port, callback) {
 
         console.log('[socket #'+socket.id+'] connected');
 
-        // Store a custom id to identify user without its session id in its session
         if (typeof session != "undefined"
-              && typeof session.customerId == "undefined") {
-          session.customerId = uid(24);
-          console.log('[socket #'+socket.id+'] Session customer id #'+session.customerId+' generated');
+                && typeof session.customerId != "undefined") {
+            console.log('[socket #'+socket.id+'] Use customerId '+session.customerId);
         }
-
 
         // Operators join all the same room to receive all message
         if (manager.isOperator(session)) {

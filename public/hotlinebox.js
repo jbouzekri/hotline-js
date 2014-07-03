@@ -49,11 +49,11 @@
         this.template = '\
             <div id="__ID__" style="__BASE_CSS__"> \
                 <div class="status-wrapper" style="__STW_CSS__"> \
-                    <iframe frameBorder="0" style="pointer-events:none;" class="statusbox" width="300" src="__STATUS_URL__"></iframe> \
+                    <iframe frameBorder="0" style="pointer-events:none;" class="statusbox" width="300" src="__STATUS_URL__" onload="document.querySelector(\'#__ID__ .chat-wrapper .chatbox\').setAttribute(\'src\', document.querySelector(\'#__ID__ .chat-wrapper .chatbox\').getAttribute(\'data-src\'));"></iframe> \
                 </div> \
                 <div class="chat-wrapper" style="__CHW_CSS__"> \
                     <div class="close" style="__CL_CSS__"></div> \
-                    <iframe frameBorder="0" class="chatbox" width="300" src="__CHAT_URL__"></iframe> \
+                    <iframe frameBorder="0" class="chatbox" width="300" data-src="__CHAT_URL__"></iframe> \
                 </div> \
             </div>',
 
@@ -64,7 +64,7 @@
             this.host = options.host || 'localhost:3000';
             this.id = 'hotlinebox_'+Math.random().toString(36).substring(7);
 
-            this.template = this.template.replace(/__ID__/, this.id);
+            this.template = this.template.replace(/__ID__/g, this.id);
             this.template = this.template.replace(/__STATUS_URL__/, this.host+'/front/status-box');
             this.template = this.template.replace(/__CHAT_URL__/, this.host+'/front/chat-box');
 
@@ -78,6 +78,8 @@
         this.initEvent = function() {
             var statusWrapper = document.querySelector("#"+this.id+" .status-wrapper");
             var chatWrapper = document.querySelector("#"+this.id+" .chat-wrapper");
+
+
 
             jqLikeLibrary.on(statusWrapper, 'click', function() {
                 statusWrapper.style.display = 'none';

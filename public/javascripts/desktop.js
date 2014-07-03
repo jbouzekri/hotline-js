@@ -65,8 +65,13 @@
             jWin.attr('data-customerid', customerId);
             this.updatePseudo(jWin, pseudo);
             // Resizable and draggable
-            jWin.resizable();
+            jWin.resizable({
+                minHeight: 290,
+                minWidth: 290
+            });
             jWin.draggable({
+                cursor: "crosshair",
+                cancel: "input,textarea,button,select,option,.panel-body,form-box",
                 // Hack to select the window which is dragged
                 drag: function( event, ui ) {
                     if (!$(this).hasClass('selected')) {
@@ -203,8 +208,17 @@
          *
          * @returns {undefined}
          */
-        addMessage: function ($customerWin, msg) {
-            $customerWin.find('.panel-body ul').append('<li>'+this.encodeHTML(msg)+'</li>');
+        addMessage: function ($customerWin, msg, classMessage) {
+            classMessage = classMessage || '';
+
+            var date = new Date(msg.date);
+            var formatedDate =
+                date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate()
+                +' '+date.getHours()+':'+date.getMinutes();
+
+            $customerWin.find('.panel-body ul').append(
+                '<li class="'+classMessage+'"><span class="date">'+formatedDate+'</span>'+this.encodeHTML(msg.msg)+'</li>'
+            );
         },
 
         /**
@@ -371,7 +385,7 @@
         jwm.updateUnreadState($customerWin);
 
         // Add message to the window
-        jwm.addMessage($customerWin, msg.msg);
+        jwm.addMessage($customerWin, msg);
     });
 
     /**
