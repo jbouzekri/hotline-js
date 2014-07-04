@@ -32,7 +32,7 @@
         template: ' \
 <div class="window panel panel-default" style="display: none; top: 20px; left: 50px;"> \
   <div class="panel-heading">\n\
-    <span class="pseudo">Undefined</span>\n\
+    <span class="pseudo">Pseudo Undefined</span>\n\
     <div class="pull-right tools">\n\
         <a href="#minus" class="minus"><span class="glyphicon glyphicon-minus"></span></a>\n\
         <a href="#remove" class="remove"><span class="glyphicon glyphicon-remove"></span></a>\n\
@@ -57,7 +57,7 @@
          * @returns {$}
          */
         createWindow: function (customerId, pseudo) {
-            var pseudo = pseudo || "Undefined";
+            var pseudo = pseudo || "Pseudo Undefined";
 
             // Chat Window jquery object
             var jWin = $(this.template);
@@ -271,7 +271,7 @@
          * @returns {undefined}
          */
         addUser: function(customerId, pseudo) {
-            var pseudo = pseudo || "Undefined";
+            var pseudo = pseudo || "Pseudo Undefined";
 
             // The tab does not exist. Add one.
             var $customerTab = $('#tab-'+customerId);

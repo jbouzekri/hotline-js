@@ -6,6 +6,7 @@ body {
     background-image: url(../images/phone.png);
     background-repeat:no-repeat;
     background-position: center center;
+    background-color: #fcfcfc;
 }
 .window {
     height: 300px;
