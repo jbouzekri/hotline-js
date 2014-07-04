@@ -5,43 +5,54 @@ module.exports.buildStateMessage = function() {
     var customerIds = [];
     var stateMessage = [];
 
-    for (i in userSockets) {
-        if (customerIds.indexOf(userSockets[i].customerId) === -1) {
+    for (customerId in userSockets) {
+        if (customerIds.indexOf(customerId) === -1) {
             stateMessage.push({
-                socketId: i,
-                customerId: userSockets[i].customerId
+                customerId: customerId
             });
 
-            customerIds.push(userSockets[i].customerId);
+            customerIds.push(customerId);
         }
     }
 
     return stateMessage;
 }
 
-module.exports.findUserSocket = function(customerId) {
-    for (i in userSockets) {
-        if (userSockets[i].customerId == customerId) {
-            return userSockets[i];
-        }
+module.exports.findUserSockets = function(customerId) {
+    if (typeof userSockets[customerId] !== "undefined") {
+        return userSockets[customerId];
     }
 
     return false;
 }
 
-module.exports.deleteSocket = function(socket) {
-    delete userSockets[socket.id];
-    delete operatorSockets[socket.id];
+module.exports.deleteSocket = function(socket, session) {
+    if (typeof userSockets[session.customerId] !== "undefined") {
+        delete userSockets[session.customerId][socket.id];
+        if (userSockets[session.customerId].length === 0) {
+            delete userSockets[session.customerId];
+        }
+    }
+    if (typeof operatorSockets[session.customerId] !== "undefined") {
+        delete operatorSockets[session.customerId][socket.id];
+        if (operatorSockets[session.customerId].length === 0) {
+            delete operatorSockets[session.customerId];
+        }
+    }
 }
 
-module.exports.registerUser = function(socket, session) {
-    socket.customerId = session.customerId;
-    userSockets[socket.id] = socket;
+module.exports.registerUserSocket = function(socket, session) {
+    if (typeof userSockets[session.customerId] == "undefined") {
+        userSockets[session.customerId] = [];
+    }
+    userSockets[session.customerId][socket.id] = socket;
 };
 
-module.exports.registerOperator = function(socket, session) {
-    socket.customerId = session.customerId;
-    operatorSockets[socket.id] = socket;
+module.exports.registerOperatorSocket = function(socket, session) {
+    if (typeof operatorSockets[session.customerId] == "undefined") {
+        operatorSockets[session.customerId] = [];
+    }
+    operatorSockets[session.customerId][socket.id] = socket;
 };
 
 module.exports.isOperator = function(session) {

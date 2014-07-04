@@ -99,7 +99,17 @@
                 event.preventDefault();
                 jwm.selectWindow($(this));
             });
-
+            jWin.find('.answer-button').click(function(event){
+                var windowObject = $(this).parents('.window.panel');
+                var textField = windowObject.find('.answer-text');
+                var message = textField.val();
+                var customerId = windowObject.data('customerid');
+                textField.val('');
+                socket.emit('operator-message', {
+                    customerId: customerId,
+                    msg: message
+                });
+            });
             // Append to DOM
             $('body').append(jWin);
 
@@ -304,11 +314,12 @@
                 customerIds.push(customerId);
             }
 
-            // Parse all existing tab and removed the one where the customerId was not in the data array
+            // Parse all existing tab and removed the one (with its window) where the customerId was not in the data array
             this.userTabParent.find('li').each(function(index){
                 var customerId = $(this).attr('id').slice(4);
                 if (customerIds.indexOf(customerId) === -1) {
                     $(this).remove();
+                    $('#window-'+customerId).remove();
                 }
             });
         },
@@ -388,17 +399,23 @@
         jwm.addMessage($customerWin, msg);
     });
 
-    /**
-     * Operator sends a message
-     */
-    $(document).on('click', '.answer-button', function(event) {
-        event.preventDefault();
-        var message = $(this).siblings('.answer-text').val();
-        var customerId = $(this).parents('.window.panel').data('customerid');
-        socket.emit('operator-message', {
-            customerId: customerId,
-            msg: message
-        })
+    socket.on('operator-message', function (msg){
+        debugHelper(msg, 'operator-message');
+
+        var customerId = msg.customerId;
+
+        // Find the window
+        var $customerWin = jwm.findWindow(customerId);
+        if ($customerWin === false) {
+            $customerWin = jwm.createWindow(customerId);
+        }
+
+        // Update unread state on the window and the tab
+        DesktopManager.updateUnreadState(customerId, $customerWin);
+        jwm.updateUnreadState($customerWin);
+
+        // Add message to the window
+        jwm.addMessage($customerWin, msg, 'operator');
     });
 
     /**

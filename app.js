@@ -50,8 +50,8 @@ app.use(function(req, res, next) {
     var sess = req.session;
     if (typeof sess.customerId == "undefined") {
         sess.customerId = uid(24);
+        console.log('Session customer id #'+sess.customerId+' generated');
     }
-    console.log('Session customer id #'+sess.customerId+' generated');
     next();
 });
 

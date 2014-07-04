@@ -26,11 +26,11 @@ module.exports.listen = function(app, sessionStore, port, callback) {
         if (manager.isOperator(session)) {
             console.log('[socket #'+socket.id+'] Operator detected');
             socket.join('managers');
-            manager.registerOperator(socket, session);
+            manager.registerOperatorSocket(socket, session);
         } else {
             console.log('[socket #'+socket.id+'] User detected');
               // Register user socket for future reference
-            manager.registerUser(socket, session);
+            manager.registerUserSocket(socket, session);
         }
 
         socket.on('chat-state', function(msg) {
@@ -54,16 +54,17 @@ module.exports.listen = function(app, sessionStore, port, callback) {
             }
         });
 
-        socket.on('manager-message', function(msg) {
-            var answerSocket = manager.findUserSocket(msg.customerId);
-            if (answerSocket) {
-                answerSocket.emit('manager-message', manager.buildOperatorMessage(session, msg));
+        socket.on('operator-message', function(msg) {
+            var answerSocket = manager.findUserSockets(msg.customerId);
+            for (id in answerSocket) {
+                answerSocket[id].emit('operator-message', manager.buildOperatorMessage(session, msg));
             }
+            io.to('managers').emit('operator-message', msg);
         });
 
         socket.on('disconnect', function(){
             console.log('[socket #'+socket.id+'] disconnected');
-            manager.deleteSocket(socket);
+            manager.deleteSocket(socket, session);
             io.to('managers').emit('chat-state', manager.buildStateMessage());
         });
     });
