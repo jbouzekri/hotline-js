@@ -1,8 +1,13 @@
 extends layout
 block append hotline-js
     .state
-        img(src="/#{theme}/offline.png", width="16")
-        strong Absent
-        span  -&nbsp;
-        em Chater avec un commercial
-        a(href="http://www.google.fr") Google
+        if online
+            span.state-img.online
+            strong Online
+            span  -&nbsp;
+            a Click to chat with an operator
+        else
+            span.state-img.offline
+            strong Unavailable
+            span  -&nbsp;
+            a Click to send a message

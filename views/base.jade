@@ -4,7 +4,7 @@ html(lang="en")
         block stylesheets
             link(rel="stylesheet", type="text/css", href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css")
             link(rel="stylesheet", type="text/css", href="/#{theme}/test.css")
-    body
+    body(class=typeof bodyClass !== "undefined" ? bodyClass : "")
         block body
         block javascripts
             script(src="//code.jquery.com/jquery-1.11.0.min.js")

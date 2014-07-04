@@ -1,18 +1,24 @@
-#hotline-js {
-    position: fixed;
-    bottom: 0px;
-    right: 0px;
-    background-color: red;
-    width: 268px;
+body.colored {
+    background-color: black;
 }
-#hotline-js .state {
-    margin: 5px;
+.state {
     cursor: pointer;
+    color: white;
+    border-radius: 3px 0 0 0;
+    margin-left: 5px;
+    margin-top: 3px;
 }
-#hotline-js img {
+.state-img {
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+    background-size: 16px 16px;
     margin-right: 5px;
-    vertical-align:middle;
+    vertical-align: middle;
 }
-#hotline-js .chat {
-    display: none;
+.state-img.online {
+    background-image: url('online.png');
+}
+.state-img.offline {
+    background-image: url('offline.png');
 }
