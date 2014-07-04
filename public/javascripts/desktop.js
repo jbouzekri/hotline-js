@@ -30,7 +30,7 @@
          * @var {string}
          */
         template: ' \
-<div class="window panel panel-default" style="display: none;"> \
+<div class="window panel panel-default" style="display: none; top: 20px; left: 50px;"> \
   <div class="panel-heading">\n\
     <span class="pseudo">Undefined</span>\n\
     <div class="pull-right tools">\n\
@@ -103,6 +103,9 @@
                 var windowObject = $(this).parents('.window.panel');
                 var textField = windowObject.find('.answer-text');
                 var message = textField.val();
+                if (message === "") {
+                    return false;
+                }
                 var customerId = windowObject.data('customerid');
                 textField.val('');
                 socket.emit('operator-message', {
@@ -229,6 +232,8 @@
             $customerWin.find('.panel-body ul').append(
                 '<li class="'+classMessage+'"><span class="date">'+formatedDate+'</span>'+this.encodeHTML(msg.msg)+'</li>'
             );
+
+            $customerWin.find('.panel-body').scrollTop($customerWin.find('.panel-body')[0].scrollHeight);
         },
 
         /**
