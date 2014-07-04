@@ -90,3 +90,6 @@ body {
 #user-tabs ul li.unread {
     font-weight: bold;
 }
+#login-box {
+    margin-top: 90px;
+}
