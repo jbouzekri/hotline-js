@@ -1,5 +1,5 @@
-extends layout
-block append hotline-js
+extends large-frame
+block append content
     form(action="/front/contact", method="post")
         input(type="hidden", name="_csrf", value="#{csrf}")
         if errors['message.name']
@@ -36,4 +36,5 @@ block append hotline-js
                 label.control-label(for='message_message') Message
                 .controls
                     textarea#message_message.form-control(placeholder='Enter message', rows='6', name='message[message]')=message.message
-        button.btn.btn-default(type='submit') Send Message
+        .form-group
+            button.btn.btn-default(type='submit') Send Message

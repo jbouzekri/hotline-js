@@ -20,7 +20,9 @@ router.post('/', function(req, res) {
         res.render('front/contact', {
             message: message,
             csrf: req.csrfToken(),
-            errors: errors
+            errors: errors,
+            bodyClass: "bordered",
+            scrollHeight: req.app.get('config').get('scrollHeight')
         });
     } else {
         res.render('front/contact_success');

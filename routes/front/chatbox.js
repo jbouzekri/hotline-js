@@ -14,7 +14,9 @@ router.get('/', function(req, res) {
     res.render('front/'+template, {
         csrf: req.csrfToken(),
         message: message,
-        errors: errors
+        errors: errors,
+        bodyClass: "bordered",
+        scrollHeight: req.app.get('config').get('scrollHeight')
     });
 });
 

@@ -1,6 +1,9 @@
 body.colored {
     background-color: black;
 }
+body.bordered {
+    border-left: 1px solid black;
+}
 .state {
     cursor: pointer;
     color: white;
@@ -21,4 +24,13 @@ body.colored {
 }
 .state-img.offline {
     background-image: url('offline.png');
+}
+.inner-content {
+    padding: 0 15px;
+}
+.chat-box-header {
+    background-color: black;
+    padding: 5px;
+    color: white;
+    margin-bottom: 10px;
 }
