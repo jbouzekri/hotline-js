@@ -28,6 +28,9 @@ body.bordered {
 .inner-content {
     padding: 0 15px;
 }
+.inner-content h1 {
+    font-size: 26px;
+}
 .chat-box-header {
     background-color: black;
     padding: 5px;

@@ -1,5 +1,6 @@
 extends large-frame
 block append content
+    h1 Contact us
     form(action="/front/contact", method="post")
         input(type="hidden", name="_csrf", value="#{csrf}")
         if errors['message.name']
