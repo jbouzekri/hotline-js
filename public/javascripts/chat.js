@@ -50,6 +50,7 @@
         }
     }
 
+    /* TODO : pseudo management
     $('#pseudo-link').click(function(event){
         event.preventDefault();
         $('#chat-container').hide();
@@ -64,7 +65,7 @@
             .reloadPseudo();
         $('#pseudo-form').hide();
         $('#chat-container').show();
-    });
+    });*/
 
     $('#chat-form').submit(function(event){
         event.preventDefault();

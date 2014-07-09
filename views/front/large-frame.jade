@@ -1,10 +1,8 @@
 extends layout
 block append javascripts
     script(src="/javascripts/jquery.slimscroll.min.js")
-    script.
-        $('.inner-content').slimScroll({height:"#{scrollHeight}"});
 block append hotline-js
     include header
     div.content
-        div.inner-content
+        div.inner-content(style="height:#{scrollHeight}px")
             block content

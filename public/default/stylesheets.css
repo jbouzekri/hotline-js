@@ -37,3 +37,12 @@ body.bordered {
     color: white;
     margin-bottom: 10px;
 }
+.form-box {
+    margin-top: 15px;
+}
+.answer-text {
+    resize: none;
+}
+.answer-button {
+    height: 54px;
+}

@@ -9,5 +9,5 @@
     "session": {
         "secret": "YourSecretGoesHere"
     },
-    "scrollHeight": 220
+    "scrollHeight": 210
 }

@@ -1,25 +1,21 @@
-extends layout
+extends large-frame
 block append javascripts
     script(src="/socket.io/socket.io.js")
     script(src="/javascripts/chat.js")
-block append hotline-js
+block append content
     #chat-container
         #chat-items
-            div
-                span Pseudo
-                span#current-pseudo Pseudo
             ul
-        form#chat-form.form-inline
-            .form-group
-                textarea.form-control(placeholder="Ask a question ?")
-            button.btn.btn-default Send
-            .btn-group.dropup
-                span.glyphicon.glyphicon-screenshot.dropdown-toggle#settings(data-toggle="dropdown")
-                ul.dropdown-menu(aria-labelledby="settings")
-                    li
-                        a#pseudo-link(href="#pseudo") Pseudo
+        form#chat-form.form-box
+            .input-group
+                textarea.form-control.answer-text(rows="2", placeholder="Ask a question ?")
+                .input-group-btn
+                    button.btn.btn-default.answer-button Send
     #pseudo-form(style="display: none;")
         form
             .form-group
                 input.form-control(type="text")
             button.btn.btn-default Submit
+block append javascripts
+    script.
+        $('#chat-items').slimScroll({height:#{scrollHeight} - $('#chat-form').outerHeight(true) - parseInt($('#chat-form').css('marginTop')) });

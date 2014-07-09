@@ -39,3 +39,6 @@ block append content
                     textarea#message_message.form-control(placeholder='Enter message', rows='6', name='message[message]')=message.message
         .form-group
             button.btn.btn-default(type='submit') Send Message
+block append javascripts
+    script.
+        $('.inner-content').slimScroll({wheelStep: 10, height: "auto"});
