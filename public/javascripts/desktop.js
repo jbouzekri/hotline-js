@@ -110,7 +110,8 @@
                 textField.val('');
                 socket.emit('operator-message', {
                     customerId: customerId,
-                    msg: message
+                    msg: message,
+                    date: new Date()
                 });
             });
             // Append to DOM

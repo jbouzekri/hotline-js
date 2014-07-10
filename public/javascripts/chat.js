@@ -5,7 +5,9 @@
         cookieName: "hotlinejs",
 
         send: function(msg) {
-            this.getSocket().emit('user-message', this.buildMessage(msg));
+            var message = this.buildMessage(msg);
+            this.getSocket().emit('user-message', message);
+            this.addMessage(message);
         },
 
         getSocket: function() {
@@ -19,7 +21,7 @@
         initSocket: function() {
             newSocket = io({reconnectionAttempts: 5});
             newSocket.on('operator-message', function(msg){
-                $('#chat-items ul').append('<li>'+msg.msg+'</li>')
+                chatManager.addMessage(msg, 'operator');
             });
             return newSocket;
         },
@@ -47,6 +49,26 @@
                 date: new Date(),
                 url: window.location.href
             };
+        },
+
+        addMessage: function (msg, classMessage) {
+            classMessage = classMessage || '';
+
+            var date = new Date(msg.date);
+            var formatedDate =
+                date.getFullYear()+'-'+(date.getMonth() + 1)+'-'+date.getDate()
+                +' '+date.getHours()+':'+date.getMinutes();
+
+            $('#chat-items ul').append(
+                '<li class="'+classMessage+'"><span class="date">'+formatedDate+'</span>'+this.encodeHTML(msg.msg)+'</li>'
+            );
+
+            var scrollTo_val = $('#chat-items').prop('scrollHeight') + 'px';
+            $('#chat-items').slimScroll({ scrollTo: scrollTo_val });
+        },
+
+        encodeHTML: function (s) {
+            return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
         }
     }
 
@@ -69,8 +91,10 @@
 
     $('#chat-form').submit(function(event){
         event.preventDefault();
-        var message = $(this).find('textarea').val()
+        var textarea = $(this).find('textarea');
+        var message = textarea.val()
         chatManager.send(message);
+        textarea.val('');
     });
 
 })(window, document, jQuery);

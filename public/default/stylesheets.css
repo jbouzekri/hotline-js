@@ -46,3 +46,14 @@ body.bordered {
 .answer-button {
     height: 54px;
 }
+#chat-items ul {
+    list-style-type: none;
+    padding: 0;
+}
+#chat-items ul li:not(.operator) {
+    color: grey;
+}
+#chat-items ul span {
+    font-weight: bold;
+    padding-right: 5px;
+}

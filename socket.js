@@ -1,6 +1,5 @@
 var cookieParser   = require('cookie-parser')();
 var manager        = require('./manager.js');
-var onlineState    = require('./online_state.js');
 var SessionSockets = require('session.socket.io-express4');
 
 module.exports.listen = function(app, sessionStore, port, callback) {
@@ -42,9 +41,9 @@ module.exports.listen = function(app, sessionStore, port, callback) {
         socket.on('online-toggle', function(msg){
             console.log('[socket #'+socket.id+'] online-toggle message received');
             if (manager.isOperator(session)) {
-                var online = onlineState.toggleState().online;
+                var online = app.get('online_state').toggleState().online;
             }
-            socket.emit('online-state', onlineState);
+            socket.emit('online-state', app.get('online_state'));
             console.log('[socket #'+socket.id+'] online-toggle message sent');
         });
 

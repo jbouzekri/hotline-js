@@ -9,5 +9,13 @@
     "session": {
         "secret": "YourSecretGoesHere"
     },
+    "security": {
+        "provider": "./provider/local",
+        "options": {
+            "users": [
+                { "id": 1, "username": "admin", "password": "admin", "email": "admin@hotline-js.net" }
+            ]
+        }
+    },
     "scrollHeight": 210
 }

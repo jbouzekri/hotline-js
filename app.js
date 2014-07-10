@@ -29,7 +29,7 @@ app.set('view engine', 'jade');
 app.locals.theme = config.get('theme');
 
 // Configure passport and return a function used to secure routes
-var ensureAuthenticated = require('./config_passport')(config);
+var ensureAuthenticated = require('./lib/security/passport')(config);
 
 // Body parser for form post and csrf token management
 app.use(bodyParser());
@@ -58,22 +58,23 @@ app.use(function(req, res, next) {
 // Load winston logger
 var logger = require('./logger')(config);
 
+// Add online state object to app
+app.set('online_state', require('./online_state'));
+
 // Routes Front
-var chatbox = require('./routes/front/chatbox');
-var statusbox = require('./routes/front/statusbox');
-var contact = require('./routes/front/contact');
-var switchonline = require('./routes/back/switchonline');
+var chatbox = require('./lib/routes/front/chatbox');
+var statusbox = require('./lib/routes/front/statusbox');
+var contact = require('./lib/routes/front/contact');
 var crosres = require('./cros.js')(config);
 
 app.use('/front', crosres);
 app.use('/front/status-box', statusbox);
 app.use('/front/chat-box', chatbox);
 app.use('/front/contact', contact);
-app.use('/switch-online', switchonline);
 
 // Routes back
-var desktop = require('./routes/back/desktop');
-var login = require('./routes/back/login');
+var desktop = require('./lib/routes/back/desktop');
+var login = require('./lib/routes/back/login');
 
 app.use('/admin/login', login);
 app.use('/admin', ensureAuthenticated);
