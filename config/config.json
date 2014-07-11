@@ -5,6 +5,7 @@
     "theme": "default",
     "allowed_origins": "*",
     "host": "hotlinebox-api.local:3000",
+    "email": "contact@hotline-js.com",
     "port": 3000,
     "session": {
         "secret": "YourSecretGoesHere"
@@ -15,6 +16,19 @@
             "users": [
                 { "id": 1, "username": "admin", "password": "admin", "email": "admin@hotline-js.net" }
             ]
+        }
+    },
+    "contact": {
+        "processor": "../../contact/mail",
+        "arguments": {
+            "transport":"SMTP",
+            "options": {
+                "service": "Gmail",
+                "auth": {
+                    "user": "mail@hotline-js.com",
+                    "pass": "password"
+                }
+            }
         }
     },
     "inner_height": 210,
