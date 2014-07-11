@@ -25,11 +25,17 @@ body.bordered {
 .state-img.offline {
     background-image: url('offline.png');
 }
+.content {
+    overflow: auto;
+}
 .inner-content {
     padding: 0 15px;
 }
 .inner-content h1 {
     font-size: 26px;
+}
+.form-button {
+    margin-bottom: 30px;
 }
 .chat-box-header {
     background-color: black;
@@ -43,8 +49,8 @@ body.bordered {
 .answer-text {
     resize: none;
 }
-.answer-button {
-    height: 54px;
+#chat-items {
+    overflow: auto;
 }
 #chat-items ul {
     list-style-type: none;

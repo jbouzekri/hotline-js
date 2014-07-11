@@ -49,11 +49,11 @@
         this.template = '\
             <div id="__ID__" style="__BASE_CSS__"> \
                 <div class="status-wrapper" style="__STW_CSS__"> \
-                    <iframe frameBorder="0" style="pointer-events:none;border-radius: 4px 0 0 0;" class="statusbox" width="300" height="25" src="__STATUS_URL__" onload="document.querySelector(\'#__ID__ .chat-wrapper .chatbox\').setAttribute(\'src\', document.querySelector(\'#__ID__ .chat-wrapper .chatbox\').getAttribute(\'data-src\'));"></iframe> \
+                    <iframe frameBorder="0" style="pointer-events:none;" allowTransparency="true" class="statusbox" width="300" height="25" src="__STATUS_URL__" onload="document.querySelector(\'#__ID__ .chat-wrapper .chatbox\').setAttribute(\'src\', document.querySelector(\'#__ID__ .chat-wrapper .chatbox\').getAttribute(\'data-src\'));"></iframe> \
                 </div> \
                 <div class="chat-wrapper" style="__CHW_CSS__"> \
                     <div class="close" style="__CL_CSS__"></div> \
-                    <iframe scrolling="no" frameBorder="0" class="chatbox" width="300" data-src="__CHAT_URL__" height="250" style="border-radius: 4px 0 0 0;"></iframe> \
+                    <iframe scrolling="no" frameBorder="0" class="chatbox" width="300" data-src="__CHAT_URL__" height="250" allowTransparency="true"></iframe> \
                 </div> \
             </div>',
 

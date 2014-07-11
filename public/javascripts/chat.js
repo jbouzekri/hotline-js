@@ -63,8 +63,7 @@
                 '<li class="'+classMessage+'"><span class="date">'+formatedDate+'</span>'+this.encodeHTML(msg.msg)+'</li>'
             );
 
-            var scrollTo_val = $('#chat-items').prop('scrollHeight') + 'px';
-            $('#chat-items').slimScroll({ scrollTo: scrollTo_val });
+            $('#chat-items').scrollTop($('#chat-items')[0].scrollHeight);
         },
 
         encodeHTML: function (s) {
@@ -91,8 +90,8 @@
 
     $('#chat-form').submit(function(event){
         event.preventDefault();
-        var textarea = $(this).find('textarea');
-        var message = textarea.val()
+        var textarea = $(this).find('input[type="text"]');
+        var message = textarea.val();
         chatManager.send(message);
         textarea.val('');
     });

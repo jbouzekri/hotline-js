@@ -4,18 +4,16 @@ block append javascripts
     script(src="/javascripts/chat.js")
 block append content
     #chat-container
-        #chat-items
+        #chat-items(style="height:#{chatHeight}px")
             ul
         form#chat-form.form-box
             .input-group
-                textarea.form-control.answer-text(rows="2", placeholder="Ask a question ?")
-                .input-group-btn
-                    button.btn.btn-default.answer-button Send
+                input.form-control.answer-text(type="text", placeholder="Ask a question ?")
+                span.input-group-btn
+                    button.btn.btn-default.answer-button(type="submit") Send
+    </div>
     #pseudo-form(style="display: none;")
         form
             .form-group
                 input.form-control(type="text")
             button.btn.btn-default Submit
-block append javascripts
-    script.
-        $('#chat-items').slimScroll({height:#{scrollHeight} - $('#chat-form').outerHeight(true) - parseInt($('#chat-form').css('marginTop')) });

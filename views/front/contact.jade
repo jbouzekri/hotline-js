@@ -37,8 +37,5 @@ block append content
                 label.control-label(for='message_message') Message
                 .controls
                     textarea#message_message.form-control(placeholder='Enter message', rows='6', name='message[message]')=message.message
-        .form-group
+        .form-group.form-button
             button.btn.btn-default(type='submit') Send Message
-block append javascripts
-    script.
-        $('.inner-content').slimScroll({wheelStep: 10, height: "auto"});

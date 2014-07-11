@@ -17,5 +17,6 @@
             ]
         }
     },
-    "scrollHeight": 210
+    "inner_height": 210,
+    "chat_height": 140
 }
